@@ -1,20 +1,30 @@
 <?php
 
-namespace Barisburakbalci\InterviewBankAccount\Tests\Model;
+namespace Barisburakbalci\InterviewBankAccount\Model;
 
-abstract class Account {
-    private float $depositFee = 0.03;
-    private float $withDrawFee = 0.03;
-    private array $transactions;
+abstract class Account
+{
+    private int $customerId;
+    private const DEPOSIT_FEE = 0.0003;
+    private const WITHDRAW_FEE = 0.005;
 
-    public function deposit(Transaction $depositTransaction) : float
+    public function __construct($customerId)
     {
-        $sameWeekFilter = function($transaction) use ($depositTransaction) {
-            $isSameWeek = date('W', $transaction->date) == date('W', $depositTransaction->date);
-            $isDeposit = $transaction->operation == 'deposit';
-            return $isDeposit && $isSameWeek;
-        };
-        $sameWeekTransactions = array_filter($this->transaction, $sameWeekFilter);
-        
+        $this->customerId = $customerId;
+    }
+
+    public function getCustomerId(): int
+    {
+        return $this->customerId;
+    }
+    
+    public function deposit(Transaction $transaction): float
+    {
+        return $transaction->amountAsEuro * self::DEPOSIT_FEE;
+    }
+
+    public function withdraw(Transaction $transaction): float
+    {
+        return $transaction->amountAsEuro * self::WITHDRAW_FEE;
     }
 }

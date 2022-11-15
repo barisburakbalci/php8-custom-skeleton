@@ -15,9 +15,7 @@ class CsvReaderTest extends TestCase
     private $csvReader;
 
     public function setUp(): void
-    {
-        $this->csvReader = new CsvReader('data.csv');
-    }
+    {}
 
     public function testFileExistance()
     {
