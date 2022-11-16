@@ -19,25 +19,9 @@ class Transaction
         public string $currency
     )
     {
-        $this->customerId = (int) $customerId;
-        $this->amount = (float) $amount;
-        $this->amountAsEuro = $this->convertToEuro($this->amount, $this->currency);
+        $this->customerId = (int)$customerId;
+        $this->amount = (float)$amount;
+        $this->amountAsEuro = Currency::toEuro($this->amount, $this->currency);
         $this->date = \DateTime::createFromFormat('Y-m-d', $date);
-    }
-
-    public function convertToEuro(float $amount, string $currency) : float
-    {
-        $amountAsEuro = $amount;
-
-        switch ($currency) {
-            case 'USD':
-                $amountAsEuro = $amount / 1.1497;
-                break;
-            case 'JPY':
-                $amountAsEuro = $amount / 129.53;
-                break;
-        }
-
-        return $amountAsEuro;
     }
 }

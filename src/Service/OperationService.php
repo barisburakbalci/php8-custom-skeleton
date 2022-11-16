@@ -5,24 +5,13 @@ namespace Barisburakbalci\InterviewBankAccount\Service;
 use Barisburakbalci\InterviewBankAccount\Model\Account;
 use Barisburakbalci\InterviewBankAccount\Model\PrivateAccount;
 use Barisburakbalci\InterviewBankAccount\Model\BusinessAccount;
-use Barisburakbalci\InterviewBankAccount\Model\Transaction;
 
 class OperationService
 {
-    public static function main(): void
-    {
-        $csvReader = new CsvReader('data.csv');
-        $transactionArray = $csvReader->toArray();
-        $transactions = [];
-        foreach ($transactionArray as $transactionData) {
-            $transactions[] = new Transaction(...$transactionData);
-        }
-        self::processTransactions($transactions);
-    }
-
-    private static function processTransactions(array $transactions): void
+    public static function getFees(array $transactions): array
     {
         $accounts = [];
+        $fees = [];
 
         foreach ($transactions as $transaction) {
             if (array_key_exists($transaction->customerId, $accounts)) {
@@ -31,15 +20,18 @@ class OperationService
                 $account = self::getAccountFor($transaction->customerId, $transaction->accountType);
                 $accounts[$transaction->customerId] = $account;
             }
+
             switch ($transaction->operationType) {
                 case 'deposit':
-                    echo round($account->deposit($transaction), 2) . PHP_EOL;
+                    $fees[] = round($account->deposit($transaction), 2);
                     break;
                 case 'withdraw':
-                    echo round($account->withdraw($transaction), 2) . PHP_EOL;
+                    $fees[] = round($account->withdraw($transaction), 2);
                     break;
             }
         }
+
+        return $fees;
     }
 
     private static function getAccountFor(int $customerId, string $accountType): Account
