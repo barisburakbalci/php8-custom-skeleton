@@ -2,26 +2,33 @@
 
 namespace Barisburakbalci\InterviewBankAccount\Model;
 
+use Barisburakbalci\InterviewBankAccount\Enums\AvailableCurrency;
+use Barisburakbalci\InterviewBankAccount\Enums\OperationType;
+use \DateTime;
+
 class Transaction
 {
     public float $amountAsEuro;
-    public int $customerId;
-    public float $amount;
-    public string $week;
-    public \DateTime $date;
 
     public function __construct(
-        string $date,
-        string $customerId,
-        public string $accountType,
-        public string $operationType,
-        string $amount,
-        public string $currency
+        public DateTime $date,
+        public int $customerId,
+        public Account $account,
+        public OperationType $operationType,
+        public float $amount,
+        public AvailableCurrency $currency
     )
     {
-        $this->customerId = (int)$customerId;
-        $this->amount = (float)$amount;
-        $this->amountAsEuro = Currency::toEuro($this->amount, $this->currency);
-        $this->date = \DateTime::createFromFormat('Y-m-d', $date);
+        $this->amountAsEuro = Currency::toEuro($this->amount, $this->currency->value);
+    }
+
+    public function process(): float
+    {
+        switch ($this->operationType) {
+            case OperationType::DEPOSIT:
+                return $this->account->deposit($this);
+            case OperationType::WITHDRAW:
+                return $this->account->withdraw($this);
+        }
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Barisburakbalci\InterviewBankAccount\Model;
 
+use Barisburakbalci\InterviewBankAccount\Enums\OperationType;
+
 class PrivateAccount extends Account {
     private const DEPOSIT_FEE = 0.0003;
     private const WITHDRAW_FEE = 0.003;
@@ -14,6 +16,7 @@ class PrivateAccount extends Account {
         $sameWeekTransactions = $this->getSameWeekWithdrawals($transaction->date);
         $remainingFreeWithdrawAmount = $this->getRemainingFreeWithdrawalAmount($sameWeekTransactions);
         $this->withdrawals[] = $transaction;
+
         return $this->calculateWithdrawalFee($transaction->amountAsEuro - $remainingFreeWithdrawAmount);
     }
 
@@ -27,7 +30,7 @@ class PrivateAccount extends Account {
         $sameWeekFilter = function($transaction) use ($date) {
             $dateDiff = $date->diff($transaction->date);
             $isSameWeek = !floor($dateDiff->format('%a') / 7);
-            $isWithdraw = $transaction->operationType == 'withdraw';
+            $isWithdraw = $transaction->operationType == OperationType::WITHDRAW;
             return $isWithdraw && $isSameWeek;
         };
 

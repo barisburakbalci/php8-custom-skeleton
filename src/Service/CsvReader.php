@@ -2,7 +2,8 @@
 
 namespace Barisburakbalci\InterviewBankAccount\Service;
 
-class CsvReader {
+class CsvReader
+{
     private string $path;
 
     public function __construct(string $path)
