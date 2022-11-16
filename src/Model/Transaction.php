@@ -4,7 +4,8 @@ namespace Barisburakbalci\InterviewBankAccount\Model;
 
 use Barisburakbalci\InterviewBankAccount\Enums\AvailableCurrency;
 use Barisburakbalci\InterviewBankAccount\Enums\OperationType;
-use \DateTime;
+use DateTime;
+use Exception;
 
 class Transaction
 {
@@ -29,6 +30,8 @@ class Transaction
                 return $this->account->deposit($this);
             case OperationType::WITHDRAW:
                 return $this->account->withdraw($this);
+            default:
+                throw new Exception('Unsupported operation!');
         }
     }
 }

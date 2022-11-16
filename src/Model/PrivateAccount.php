@@ -3,6 +3,7 @@
 namespace Barisburakbalci\InterviewBankAccount\Model;
 
 use Barisburakbalci\InterviewBankAccount\Enums\OperationType;
+use DateTime;
 
 class PrivateAccount extends Account {
     private const DEPOSIT_FEE = 0.0003;
@@ -25,7 +26,7 @@ class PrivateAccount extends Account {
         return round($withdrawAmount > 0 ? $withdrawAmount * $this::WITHDRAW_FEE : 0, 2);
     }
 
-    public function getSameWeekWithdrawals(\DateTime $date): array
+    public function getSameWeekWithdrawals(DateTime $date): array
     {
         $sameWeekFilter = function($transaction) use ($date) {
             $dateDiff = $date->diff($transaction->date);

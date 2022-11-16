@@ -6,6 +6,7 @@ use Barisburakbalci\InterviewBankAccount\Enums\AccountType;
 use Barisburakbalci\InterviewBankAccount\Model\Account;
 use Barisburakbalci\InterviewBankAccount\Model\BusinessAccount;
 use Barisburakbalci\InterviewBankAccount\Model\PrivateAccount;
+use Exception;
 
 class AccountRepository
 {
@@ -28,6 +29,8 @@ class AccountRepository
                 return new BusinessAccount($customerId);
             case AccountType::PRIVATE:
                 return new PrivateAccount($customerId);
+            default:
+                throw new Exception('Unsupported account type!');
         }
     }
 }

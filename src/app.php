@@ -10,25 +10,20 @@ use Barisburakbalci\InterviewBankAccount\Enums\OperationType;
 use Barisburakbalci\InterviewBankAccount\Model\Transaction;
 use Barisburakbalci\InterviewBankAccount\Repository\AccountRepository;
 use Barisburakbalci\InterviewBankAccount\Service\CsvReader;
-use Barisburakbalci\InterviewBankAccount\Service\OperationService;
+use DateTime;
 
 $csvReader = new CsvReader('data.csv');
-$transactionArray = $csvReader->toArray();
-$transactions = [];
+$transactions = $csvReader->toArray();
+$fees = [];
 
-foreach ($transactionArray as $transactionData) {
-    $transactions[] = new Transaction(
-        \DateTime::createFromFormat('Y-m-d', $transactionData[0]),
-        intval($transactionData[1]),
-        AccountRepository::getAccountFor(AccountType::fromName($transactionData[2]),$transactionData[1]),
-        OperationType::fromName($transactionData[3]),
-        floatval($transactionData[4]),
-        AvailableCurrency::fromName($transactionData[5])
+foreach ($transactions as $transactionAsArray) {
+    $transaction = new Transaction(
+        DateTime::createFromFormat('Y-m-d', $transactionAsArray[0]),
+        intval($transactionAsArray[1]),
+        AccountRepository::getAccountFor(AccountType::fromName($transactionAsArray[2]),$transactionAsArray[1]),
+        OperationType::fromName($transactionAsArray[3]),
+        floatval($transactionAsArray[4]),
+        AvailableCurrency::fromName($transactionAsArray[5])
     );
-}
-
-$fees = OperationService::getFees($transactions);
-
-foreach ($fees as $fee) {
-    echo $fee . PHP_EOL;
+    echo $transaction->process() . PHP_EOL;
 }
