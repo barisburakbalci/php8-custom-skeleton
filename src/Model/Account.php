@@ -20,11 +20,11 @@ abstract class Account
     
     public function deposit(Transaction $transaction): float
     {
-        return round($transaction->amountAsEuro * self::DEPOSIT_FEE, 2);
+        return $transaction->amountAsEuro * self::DEPOSIT_FEE;
     }
 
     public function withdraw(Transaction $transaction): float
     {
-        return round($transaction->amountAsEuro * self::WITHDRAW_FEE, 2);
+        return $transaction->amountAsEuro * self::WITHDRAW_FEE;
     }
 }

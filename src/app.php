@@ -19,11 +19,10 @@ $fees = [];
 foreach ($transactions as $transactionAsArray) {
     $transaction = new Transaction(
         DateTime::createFromFormat('Y-m-d', $transactionAsArray[0]),
-        intval($transactionAsArray[1]),
         AccountRepository::getAccountFor(AccountType::fromName($transactionAsArray[2]),$transactionAsArray[1]),
         OperationType::fromName($transactionAsArray[3]),
         floatval($transactionAsArray[4]),
         AvailableCurrency::fromName($transactionAsArray[5])
     );
-    echo $transaction->process() . PHP_EOL;
+    echo round($transaction->process(), 2) . PHP_EOL;
 }

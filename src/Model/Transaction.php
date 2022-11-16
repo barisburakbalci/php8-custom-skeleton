@@ -13,7 +13,6 @@ class Transaction
 
     public function __construct(
         public DateTime $date,
-        public int $customerId,
         public Account $account,
         public OperationType $operationType,
         public float $amount,
