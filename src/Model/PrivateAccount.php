@@ -19,7 +19,7 @@ class PrivateAccount extends Account {
 
     public function calculateWithdrawalFee(float $withdrawAmount): float
     {
-        return $withdrawAmount > 0 ? $withdrawAmount * $this::WITHDRAW_FEE : 0;
+        return round($withdrawAmount > 0 ? $withdrawAmount * $this::WITHDRAW_FEE : 0, 2);
     }
 
     public function getSameWeekWithdrawals(\DateTime $date): array

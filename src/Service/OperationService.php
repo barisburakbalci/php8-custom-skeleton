@@ -23,10 +23,10 @@ class OperationService
 
             switch ($transaction->operationType) {
                 case 'deposit':
-                    $fees[] = round($account->deposit($transaction), 2);
+                    $fees[] = $account->deposit($transaction);
                     break;
                 case 'withdraw':
-                    $fees[] = round($account->withdraw($transaction), 2);
+                    $fees[] = $account->withdraw($transaction);
                     break;
             }
         }
