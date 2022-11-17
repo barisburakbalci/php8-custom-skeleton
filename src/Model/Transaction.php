@@ -4,6 +4,7 @@ namespace Barisburakbalci\InterviewBankAccount\Model;
 
 use Barisburakbalci\InterviewBankAccount\Enums\AvailableCurrency;
 use Barisburakbalci\InterviewBankAccount\Enums\OperationType;
+use Barisburakbalci\InterviewBankAccount\Service\Currency;
 use DateTime;
 use Exception;
 
@@ -19,7 +20,7 @@ class Transaction
         public AvailableCurrency $currency
     )
     {
-        $this->amountAsEuro = Currency::toEuro($this->amount, $this->currency->value);
+        $this->amountAsEuro = Currency::toEuro($this->currency, $this->amount);
     }
 
     public function process(): float

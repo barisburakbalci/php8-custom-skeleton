@@ -17,14 +17,14 @@ abstract class Account
     {
         return $this->customerId;
     }
-    
+
     public function deposit(Transaction $transaction): float
     {
-        return $transaction->amountAsEuro * self::DEPOSIT_FEE;
+        return $transaction->amount * self::DEPOSIT_FEE;
     }
 
     public function withdraw(Transaction $transaction): float
     {
-        return $transaction->amountAsEuro * self::WITHDRAW_FEE;
+        return $transaction->amount * self::WITHDRAW_FEE;
     }
 }

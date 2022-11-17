@@ -3,9 +3,11 @@
 namespace Barisburakbalci\InterviewBankAccount\Model;
 
 use Barisburakbalci\InterviewBankAccount\Enums\OperationType;
+use Barisburakbalci\InterviewBankAccount\Service\Currency;
 use DateTime;
 
-class PrivateAccount extends Account {
+class PrivateAccount extends Account
+{
     private const DEPOSIT_FEE = 0.0003;
     private const WITHDRAW_FEE = 0.003;
     private const WEEKLY_FREE_WITHDRAWAL_COUNT = 3;
@@ -18,17 +20,13 @@ class PrivateAccount extends Account {
         $remainingFreeWithdrawAmount = $this->getRemainingFreeWithdrawalAmount($sameWeekTransactions);
         $this->withdrawals[] = $transaction;
 
-        return $this->calculateWithdrawalFee($transaction->amountAsEuro - $remainingFreeWithdrawAmount);
-    }
-
-    public function calculateWithdrawalFee(float $withdrawAmount): float
-    {
+        $withdrawAmount = Currency::fromEuro($transaction->currency, $transaction->amountAsEuro - $remainingFreeWithdrawAmount);
         return $withdrawAmount > 0 ? $withdrawAmount * $this::WITHDRAW_FEE : 0;
     }
 
     public function getSameWeekWithdrawals(DateTime $date): array
     {
-        $sameWeekFilter = function($transaction) use ($date) {
+        $sameWeekFilter = function ($transaction) use ($date) {
             $dateDiff = $date->diff($transaction->date);
             $isSameWeek = !floor($dateDiff->format('%a') / 7);
             $isWithdraw = $transaction->operationType == OperationType::WITHDRAW;
